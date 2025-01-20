@@ -92,10 +92,14 @@ if __name__ == "__main__" :
     score2 : list[Joueurs]
     joueur1 : int
     joueur2 : int
+    difficulte : int
+    difficulte2 : int
 
     choixJeu = 0
     choix = 0
     choix_joueur = 0
+    difficulte = 0
+    difficulte2 = 0
     score = []
     score2 = []
     score=Charger_Sauvegarde(score)
@@ -114,18 +118,22 @@ if __name__ == "__main__" :
                     if len(score) == 0 :
                         Ajouter_Joueurs(score)
                         score = score
+
                     else:
                         Ajouter_Joueurs(score2)
                         score += score2
                         score2 = []
+
                 elif choix_joueur == 2 :
                     choix_classement = Menu_Classement()
                     if choix_classement == 1 :
                         score = Tri_Devinette(score)
                         Classement_Devinette(score)
+
                     elif choix_classement == 2 :
                         score = Tri_Allumette(score)
                         Classement_Allumette(score)
+
                     elif choix_classement == 3 :
                         score = Tri_Morpion(score)
                         Classement_Morpion(score)
@@ -140,83 +148,163 @@ if __name__ == "__main__" :
         elif choixJeu == 2 :  #condition si/sinon tout au long du menu pour démarrer le jeu choisis par les joueurs, est démarré ici ce qui est en lien avec le jeu 1
 
             system('cls' if name == 'nt' else 'clear')
-            print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
-            choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))  #les joueurs choisissent ce qu'ils veulent faire
+            choix = 0
+            while choix != 3: 
+                print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
+                choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))  #les joueurs choisissent ce qu'ils veulent faire
 
-            while  choix < 1 or choix > 3 :    #fiabilisation
-                print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
-                choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
-            system('cls' if name == 'nt' else 'clear')
-
-            if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
-                Regle_Devinette()
-                input()
+                while  choix < 1 or choix > 3 :    #fiabilisation
+                    print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
+                    choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
                 system('cls' if name == 'nt' else 'clear')
 
-            elif choix == 2 :
-                joueur1 = Choisir_Joueur1(score, choixJeu)
-                joueur2 = Choisir_Joueur2(score, choixJeu)
-                system('cls' if name == 'nt' else 'clear')
-                resultat = Jeu_Devinette()
-                if resultat :
-                    score[joueur1-1].score_devinette += 1
-                else:
-                    score[joueur2-1].score_devinette += 1
+                if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
+                    Regle_Devinette()
+                    input()
+                    system('cls' if name == 'nt' else 'clear')
+
+                elif choix == 2 :
+                    joueur1 = Choisir_Joueur1(score, choixJeu)
+                    joueur2 = Choisir_Joueur2(score, choixJeu)
+                    system('cls' if name == 'nt' else 'clear')
+
+                    # si un des joueurs est un ordinateur(=0) ou si les 2 joueurs ne sont pas des ordinateurs , on lance la fonction correspondante
+                    if joueur1 == 0 or joueur2 == 0 :   
+
+                        if joueur1 != 0 and joueur2 == 0 :
+
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Devinette(score[joueur1-1].prenom, "Ordinateur2", difficulte)
+
+                        elif joueur2 != 0 and joueur1 == 0 :
+                            resultat = Jeu_Devinette("Ordinateur1", score[joueur2-1].prenom, difficulte)
+
+                        else:
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Devinette("Ordinateur1", "Ordinateur2", difficulte)
+
+                    else:
+                        resultat = Jeu_Devinette(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte)
+                        if resultat :
+                            score[joueur1-1].score_devinette += 1
+                        else:
+                            score[joueur2-1].score_devinette += 1
                 
                 
-                input()
+                    input()
+                    system('cls' if name == 'nt' else 'clear')
 
             
         elif choixJeu == 3 :   #est démarré ici ce qui est en lien avec le jeu 2
 
             system('cls' if name == 'nt' else 'clear')
-            print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
-            choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
-
-            while  choix < 1 or choix > 3 :
-                print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
+            choix = 0
+            while choix != 3:
+                print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
                 choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
-            system('cls' if name == 'nt' else 'clear')
 
-            if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
-                Regle_Allumettes() 
-                input()
-            elif choix == 2 :
-                joueur1 = Choisir_Joueur1(score, choixJeu)
-                joueur2 = Choisir_Joueur2(score, choixJeu)
+                while  choix < 1 or choix > 3 :
+                    print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
+                    choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
                 system('cls' if name == 'nt' else 'clear')
-                resultat = Jeu_Allumettes()
-                if resultat :
-                    score[joueur1-1].score_allumette += 1
-                else:
-                    score[joueur2-1].score_allumette += 1
-                input()
+
+                if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
+                    Regle_Allumettes() 
+                    input()
+                    system('cls' if name == 'nt' else 'clear')
+                elif choix == 2 :
+                    joueur1 = Choisir_Joueur1(score, choixJeu)
+                    joueur2 = Choisir_Joueur2(score, choixJeu)
+                    system('cls' if name == 'nt' else 'clear')
+
+                    if joueur1 == 0 or joueur2 == 0 :   
+                        if joueur1 != 0 and joueur2 == 0 :
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Allumettes(score[joueur1-1].prenom, "Ordinateur2", difficulte, difficulte2)
+
+                        elif joueur2 != 0 and joueur1 == 0 :
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Allumettes("Ordinateur1", score[joueur2-1].prenom, difficulte, difficulte2)
+
+                        else:
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+
+                            system('cls' if name == 'nt' else 'clear')
+
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte2 = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+
+                            resultat = Jeu_Allumettes("Ordinateur1", "Ordinateur2", difficulte, difficulte2)
+
+                    else:
+                        resultat = Jeu_Allumettes(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte, difficulte2)
+                        if resultat :
+                            score[joueur1-1].score_allumette += 1
+                        else:
+                            score[joueur2-1].score_allumette += 1
+                    input()
+                    system('cls' if name == 'nt' else 'clear')
 
         elif choixJeu == 4 :  #est démarré ici ce qui est en lien avec le jeu 3
 
             system('cls' if name == 'nt' else 'clear')
-            print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
-            choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
-
-            while  choix < 1 or choix > 3 :    #fiabilisation
-                print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
+            choix = 0
+            while choix != 3:
+                print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
                 choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
-            system('cls' if name == 'nt' else 'clear')
 
-            if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
-                Regle_Morpion() 
-                input()
-                
-            elif choix == 2 :
-                joueur1 = Choisir_Joueur1(score, choixJeu)
-                joueur2 = Choisir_Joueur2(score, choixJeu)
+                while  choix < 1 or choix > 3 :    #fiabilisation
+
+                    print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
+                    choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
                 system('cls' if name == 'nt' else 'clear')
-                resultat = Jeu_Morpion()
-                if resultat :
-                    score[joueur1-1].score_morpion += 1
-                else:
-                    score[joueur2-1].score_morpion += 1
-                input()
+
+                if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
+                    Regle_Morpion() 
+                    input()
+                    system('cls' if name == 'nt' else 'clear')
+                elif choix == 2 :
+                    joueur1 = Choisir_Joueur1(score, choixJeu)
+                    joueur2 = Choisir_Joueur2(score, choixJeu)
+                    system('cls' if name == 'nt' else 'clear')
+
+                    if joueur1 == 0 or joueur2 == 0 :
+                        if joueur1 != 0 and joueur2 == 0 :
+
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Morpion(score[joueur1-1].prenom, "Ordinateur2", difficulte, difficulte2)
+
+                        elif joueur2 != 0 and joueur1 == 0 :
+
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Morpion("Ordinateur1", score[joueur2-1].prenom, difficulte, difficulte2)
+
+                        else:
+
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+
+                            system('cls' if name == 'nt' else 'clear')
+
+                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
+                            difficulte2 = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            resultat = Jeu_Morpion("Ordinateur1", "Ordinateur2", difficulte, difficulte2)
+
+                    else:
+                        resultat = Jeu_Morpion(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte, difficulte2)
+                        if resultat :
+                            score[joueur1-1].score_morpion += 1
+                        else:
+                            score[joueur2-1].score_morpion += 1
+                    input()
+                    system('cls' if name == 'nt' else 'clear')
 
         elif choixJeu == 5: 
             system('cls' if name == 'nt' else 'clear')

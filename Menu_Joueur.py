@@ -147,16 +147,20 @@ def Choisir_Joueur1(score : list[Joueurs], choixJeu : int) -> int :
     ENTREE : la liste des joueurs, le choix du jeu 
     SORTIE : le joueur 1
     """
-    
-    if choixJeu == 2 :
-        score = Tri_Devinette(score)
-        Classement_Devinette(score)
-    elif choixJeu == 3 :
-        score = Tri_Allumette(score)
-        Classement_Allumette(score)
-    elif choixJeu == 4 :
-        score = Tri_Morpion(score)
-        Classement_Morpion(score)
+    joueur1 : int
+    joueur1 = int(input(bcolors.jaune + "Voulez vous que le joueur1 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc))
+    if joueur1 == 0 :
+        return joueur1
+    else :
+        if choixJeu == 2 :
+            score = Tri_Devinette(score)
+            Classement_Devinette(score)
+        elif choixJeu == 3 :
+            score = Tri_Allumette(score)
+            Classement_Allumette(score)
+        elif choixJeu == 4 :
+            score = Tri_Morpion(score)
+            Classement_Morpion(score)
     print()
     print()
     print(bcolors.cyan + "Le choix du joueur se fait avec son id.")
@@ -172,6 +176,11 @@ def Choisir_Joueur2(score : list[Joueurs], choixJeu : int) -> int :
     ENTREE : la liste des joueurs, le choix du jeu 
     SORTIE : le joueur 2
     """
+    system('cls' if name == 'nt' else 'clear')
+    joueur2 : int
+    joueur2 = int(input(bcolors.jaune + "Voulez vous que le joueur2 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc))
+    if joueur2 == 0 :
+        return joueur2
     if choixJeu == 2 :
         score = Tri_Devinette(score)
         Classement_Devinette(score)

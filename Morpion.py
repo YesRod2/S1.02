@@ -1,6 +1,6 @@
 from os import system, name
 from bcolors import bcolors
-
+from random import randint,choice
 
 def Regle_Morpion() -> None:
     """
@@ -41,99 +41,108 @@ def TableauVide() -> list[list[str]]:
     return Tableau
 
 
-def Joueur1(Tableau : list[list[str]]) -> None:
+def Joueur(Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : int, nb_tours : int) -> None:
     """
     Procédure permettant au joueur1 de choisir où placer son point
-    ENTREE : le tableau du morpion
+    ENTREE : 
+            - `Tableau`, un tableau, qui représente le tableau du morpion.
+            - `prenom`, une chaîne, qui représente le nom d'utilisateur du joueur.
+            - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
+            - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
+            - `difficulte1`, un entier, qui représente la difficulté du robot 1.
+            - `difficulte2`, un entier, qui représente la difficulté du robot 2.
+            - `nb_tours`, un entier, qui représente le nombre de tours.
+
     SORTIE : RIEN
     """
     Colonne : int
     Ligne : int
+    
+    if prenom == "Ordinateur1":
+        if difficulte1 == 1:
+            Ligne = randint(1, 3)
+            Colonne = randint(1, 3)
+        else:
+            if nb_tours == 1 or nb_tours == 2:
+                Ligne = choice([1, 3])
+                Colonne = choice([1, 3])
 
-    #Demande à l'utilisateur d'entrer les coordonnées d'où il veut jouer
-    print("Joueur 1 (X), à vous de jouer, entrez les coordonnées X (ligne) et Y (colonne) entre 1 et 3")
-    Ligne = int(input("Joueur 1 (X):Entrez la coordonnée en X (entre 1 et 3) :"))
-    Colonne = int(input("Joueur 1 (X): Entrez la coordonnée en Y (entre 1 et 3) :"))
+    elif prenom == "Ordinateur2":
+        if difficulte2 == 1:
+            Ligne = randint(1, 3)
+            Colonne = randint(1, 3)
+        else:
+            if nb_tours == 1 or nb_tours == 2:
+                Ligne = choice([1, 3])
+                Colonne = choice([1, 3])
+    else:
+        print(f"{bcolors.blanc}{bcolors.cyan}{prenom}, à vous de jouer, entrez les coordonnées X (ligne) et Y (colonne) entre 1 et 3")
+        Ligne = int(input(f"{prenom}, entrez la coordonnée en X (entre 1 et 3) : {bcolors.blanc}" ))
+        Colonne = int(input(f"{bcolors.blanc}{bcolors.cyan}{prenom}, entrez la coordonnée en Y (entre 1 et 3) : {bcolors.blanc}"))
     
 
     #Vérifie si les coordonnées sont bonne (pas strictement inférieur à 1 et pas strictement supérieur à 3)
     while((Colonne < 1 or Colonne > 3) or (Ligne < 1 or Ligne > 3)):
         #Vérifie si le problème viens des coordonnées de la colonne
         if(Colonne < 1 or Colonne > 3):
-            print("Vous avez entrée une coordonnée en Ligne incorrect !")
-            Colonne = int(input("Entrez à nouveau une coordonnée de la colonne (compris entre 1 et 3): "))
+            print(f"{bcolors.blanc}{bcolors.cyan}Vous avez entrée une coordonnée en colonne {bcolors.rouge}incorrect !")
+            Colonne = int(input(f"{bcolors.blanc}{bcolors.cyan}Entrez à nouveau une coordonnée de la colonne (compris entre 1 et 3): {bcolors.blanc}"))
             #Ou si le problème viens des lignes
         elif(Ligne < 1 or Ligne > 3):
-            print("Vous avez entrée une coordonnée en Colonne incorrect !")
-            Ligne = int(input("Entrez à nouveau une coordonnée de la ligne (compris entre 1 et 3): "))
+            print(f"{bcolors.blanc}{bcolors.cyan}Vous avez entrée une coordonnée en ligne {bcolors.rouge}incorrect !")
+            Ligne = int(input(f"{bcolors.blanc}{bcolors.cyan}Entrez à nouveau une coordonnée de la ligne (compris entre 1 et 3): {bcolors.blanc}"))
 
     #Envois dans la fonction pour placer le pion du joueur sur la case entrée par le joueur
-    JeuJoueur1(Colonne, Ligne, Tableau)
+    JeuJoueur(Colonne, Ligne, Tableau, prenom, joueur1, joueur2, difficulte1, difficulte2, nb_tours)
 
 #Fonction pour placer le pion du joueur 1 là où à été demandé par le joueur 1 
-def JeuJoueur1(Colonne : int, Ligne : int, Tableau : list[list[str]]) -> list[list[str]]:
+def JeuJoueur(Colonne : int, Ligne : int, Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : int, nb_tours : int) -> list[list[str]]:
     """
     Fonction qui place le point du joueur1 
-    ENTREE : la colonne choisi, la ligne choisi, le tableau du morpion
-    SORTIE : le tableau avec la case choisis rempli
+    ENTREE : 
+            - `Colonne`, un entier, qui représente la colonne choisi par le joueur.
+            - `Ligne`, un entier, qui représente la ligne choisi par le joueur.
+            - `Tableau`, un tableau, qui représente le tableau du morpion.
+            - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
+            - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
+            - `difficulte1`, un entier, qui représente la difficulté du robot 1.
+            - `difficulte2`, un entier, qui représente la difficulté du robot 2.
+            - `nb_tours`, un entier, qui représente le nombre de tours.
+
+    SORTIE : 
+            - `Tableau`, un tableau, qui représente le tableau du morpion.
     """
     #Vérifie si la case et vide
     system('cls' if name == 'nt' else 'clear')
-    if (Tableau[Colonne - 1][Ligne - 1] == " "):
-        #Si elle est vide, alors le programme place le pion du joueur 1
-        Tableau[Colonne - 1][Ligne - 1] = "X"
-    
-    else :
-        #Sinon si la case est déjà occupé, alors on lui dit qu'elle est déjà occupé
-        system('cls' if name == 'nt' else 'clear')
-        print("La ligne est déjà occupé !")
-        #Et on lui redemande d'entrer à nouveau des coordonnées
-        Joueur1(Tableau)
-    
+
+    if prenom == joueur1:
+
+        if (Tableau[Colonne - 1][Ligne - 1] == " "):
+            #Si elle est vide, alors le programme place le pion du joueur 1
+            Tableau[Colonne - 1][Ligne - 1] = "X"
+
+        else :
+            #Sinon si la case est déjà occupé, alors on lui dit qu'elle est déjà occupé
+            system('cls' if name == 'nt' else 'clear')
+            print(f"{bcolors.blanc}{bcolors.cyan}La ligne est déjà occupé !")
+            #Et on lui redemande d'entrer à nouveau des coordonnées
+            Joueur(Tableau, prenom, joueur1, joueur2, difficulte1, difficulte2, nb_tours)
+
+    else:
+
+        if (Tableau[Colonne - 1][Ligne - 1] == " "):
+            #Si elle est vide, alors le programme place le pion du joueur 1
+            Tableau[Colonne - 1][Ligne - 1] = "O"
+
+        else :
+            #Sinon si la case est déjà occupé, alors on lui dit qu'elle est déjà occupé
+            system('cls' if name == 'nt' else 'clear')
+            print(f"{bcolors.blanc}{bcolors.cyan}La ligne est déjà occupé !")
+            #Et on lui redemande d'entrer à nouveau des coordonnées
+            Joueur(Tableau, prenom, joueur1, joueur2, difficulte1, difficulte2, nb_tours)
     #Il retourne "Tableau" pour ensuite l'enregistrer en général
     return Tableau
        
-#Jeu du joueur 2
-def Joueur2(Tableau : list[list[str]]) :
-    """
-    Procédure permettant au joueur1 de choisir où placer son point
-    ENTREE : le tableau du morpion
-    SORTIE : RIEN
-    """
-    Colonne : int
-    Ligne : int
-
-    print("Joueur 2 (O), à vous de jouer, entrez les coordonnées X (ligne) et Y (colonne) entre 1 et 3")
-    Ligne = int(input("Joueur 2 (O): Entrez la coordonnée en X (entre 1 et 3) :"))
-    Colonne = int(input("Joueur 2 (O): Entrez la coordonnée en Y (entre 1 et 3) :"))
-    
-
-    while((Colonne < 1 or Colonne > 3) or (Ligne < 1 or Ligne > 3)):
-        if(Colonne < 1 or Colonne > 3):
-            print("Vous avez entrée une coordonnée en Ligne incorrect !")
-            Colonne = int(input("Entrez à nouveau une coordonnée de la colonne (compris entre 1 et 3): "))
-        elif(Ligne < 1 or Ligne > 3):
-            print("Vous avez entrée une coordonnée en Colonne incorrect !")
-            Ligne = int(input("Entrez à nouveau une coordonnée de la ligne (compris entre 1 et 3): "))
-    JeuJoueur2(Colonne, Ligne, Tableau)
-
-
-def JeuJoueur2(Colonne : int, Ligne : int, Tableau : list[list[str]]) -> list[list[str]]:
-    """
-    Fonction qui place le point du joueur2 
-    ENTREE : la colonne choisi, la ligne choisi, le tableau du morpion
-    SORTIE : le tableau avec la case choisis rempli
-    """
-    system('cls' if name == 'nt' else 'clear')
-    if (Tableau[Colonne - 1][Ligne - 1] == " "):
-        Tableau[Colonne - 1][Ligne - 1] = "O"
-    
-    else :
-        system('cls' if name == 'nt' else 'clear')
-        print("La ligne est déjà occupé !")
-        Joueur2(Tableau)
-    return Tableau
-
 
 def VerifierGagne(Tableau: list[list[str]]) -> bool:
     """
@@ -182,14 +191,22 @@ def AfficherTableau(Tableau: list[list[str]]) -> None:
 
     return None
 
-def Jeu_Morpion() -> None :
+def Jeu_Morpion(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : int) -> None :
     """
     Procédure faisant tourner le jeu du morpion
-    ENTREE : RIEN
+    ENTREE : 
+            - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
+            - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
+            - `difficulte1`, un entier, qui représente la difficulté du robot 1.
+            - `difficulte2`, un entier, qui représente la difficulté du robot 2.
     SORTIE : RIEN
     """
+
     joueurgagne : bool
+    nb_tours : int
+    prenom : str
     joueurgagne = False
+    nb_tours = 0 
 
     system('cls' if name == 'nt' else 'clear')
     Tableau : list[list[str]] 
@@ -197,27 +214,28 @@ def Jeu_Morpion() -> None :
     
     #Boucle while du tant que un joueur n'a pas gagné, on reste dedans
     while(not joueurgagne):
+        nb_tours += 1
         #Double vérification pour éviter de faire jouer les deux joueurs quand un à gagné
+        if nb_tours % 2 == 1:
+            prenom = joueur1
+        else:
+            prenom = joueur2
         
         if(joueurgagne == False):
             #Fonction pour faire jouer le joueur 1
-            Joueur1(Tableau)
+            Joueur(Tableau, prenom, joueur1, joueur2, difficulte1, difficulte2, nb_tours)
             #Affichage du tableau pour montrer où le joueur à placé son pion
             AfficherTableau(Tableau)
+            input()
             #Fonction pour vérifier si le joueur à gagné
             joueurgagne = VerifierGagne(Tableau)
 
             if (joueurgagne):
-                print("Le joueur 1 à gagné la partie !")
-                print("Le joueur 2 à perdu !")
-                
-            if(joueurgagne == False):
-                Joueur2(Tableau) 
-                AfficherTableau(Tableau)
-                joueurgagne = VerifierGagne(Tableau)
-
-                if (joueurgagne == True):
-                    print("Le joueur 2 à gagné la partie !")
-                    print("Le joueur 1 à perdu !")
+                if nb_tours % 2 == 1:
+                    print(f"{bcolors.blanc}{bcolors.cyan}{joueur1} a {bcolors.vert}gagné {bcolors.blanc}{bcolors.cyan}la partie !")
+                    print(f"{joueur2} a {bcolors.rouge}perdu !")
+                else:
+                    print(f"{bcolors.blanc}{bcolors.cyan}{joueur2} à {bcolors.vert}gagné {bcolors.blanc}{bcolors.cyan}la partie !")
+                    print(f"{joueur1} a {bcolors.rouge}perdu !")
 
     return None
