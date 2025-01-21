@@ -63,10 +63,14 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
     print(f"{bcolors.blanc}{bcolors.cyan}{joueur1} a choisis son nombre.")
     print(f"À vous de jouer {joueur2}, trouvez son nombre le plus vite possible.")
 
-    #On regarde si le joueur 2 est un ordinateur ou un joueur
+    # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+    #sinon le joueur joue
     if joueur2 == "Ordinateur2":
+
+        #On attends 2 secondes pour que l'utilisateur puisse lire le message
         sleep(2)
-        #On regarde si le joueur 2 est un ordinateur intelligent ou non (1 = non intelligent, 2 = intelligent)
+
+        #On regarde si l'ordinateur est intelligent ou non (1 = non intelligent, 2 = intelligent)
         if difficulte == 1:
             choix_joueur2 = randint(1, 100)
         else:
@@ -74,33 +78,38 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
             choix_joueur2 = mil
 
     else:
+
         choix_joueur2 = int(input("Quelle est votre nombre : " + bcolors.blanc))   #choix du premier nombre du joueur2
         while choix_joueur2 > 100 or choix_joueur2 < 1 :   #fiabilisation pour respecter les règles du jeu
             print(bcolors.rouge + "Pour rappel, le nombre choisis est entre " + bcolors.blanc + "1 " + bcolors.rouge + "et " + bcolors.blanc +"100" + bcolors.rouge + ": " + bcolors.blanc)
             choix_joueur2 = int(input(bcolors.cyan + "Votre nombre : " + bcolors.blanc))
 
-
-    while choix_joueur2 != choix_joueur1 and essai != 0 :   #boucle "tant que" permettant de faire tourner le jeu, jusqu'à ce que le joueur2 trouve le bon nombre ou qu'il ai épuisé ses 10 essais 
+    #boucle "tant que" permettant de faire tourner le jeu, jusqu'à ce que le joueur2 trouve le bon nombre ou qu'il ai épuisé ses 10 essais 
+    while choix_joueur2 != choix_joueur1 and essai != 0 :   
         system('cls' if name == 'nt' else 'clear')
         
         print(f"{bcolors.blanc}{bcolors.cyan}{joueur2} a choisi ce nombre : {bcolors.blanc}{choix_joueur2}")
         print(f"{bcolors.blanc}{bcolors.cyan}{joueur1}, le nombre choisi est-il trop grand ou trop petit ?")
 
-        #On regarde si le joueur 1 est un ordinateur ou un joueur
+        # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+        #sinon le joueur joue
         if joueur1 == "Ordinateur1":
 
+            #On attends 2 secondes pour que l'utilisateur puisse lire le message
             sleep(2)
 
             if choix_joueur2 < choix_joueur1:
                 print(f"{bcolors.blanc}{bcolors.cyan}trop petit")
                 phrase = "trop petit"
 
+                #On attends 2 secondes pour que l'utilisateur puisse lire le message
                 sleep(2)
 
             else:
                 print(f"{bcolors.blanc}{bcolors.cyan}trop grand")
                 phrase = "trop grand"
-
+                
+                #On attends 2 secondes pour que l'utilisateur puisse lire le message
                 sleep(2)
 
         else:
@@ -159,6 +168,8 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
     
     else:
 
+        #Un message différent est écrit en fonction des joueurs ou ordinateurs
+
         if joueur1 == "Ordinateur1" and joueur2 != "Ordinateur2":
 
             if essai == 0 and choix_joueur2 != choix_joueur1:
@@ -170,7 +181,7 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
         elif joueur1 != "Ordinateur1" and joueur2 == "Ordinateur2":
 
             if essai == 0 and choix_joueur2 != choix_joueur1:
-                print(f"{bcolors.blanc}{bcolors.cyan}{joueur1}, l'{joueur2} n'a pazs trouvé votre nombre en 10 essais, ce qui veut dire qu'il a malheureusement{bcolors.rouge} perdu{bcolors.blanc}{bcolors.cyan}. Bravo à vous {joueur1} ! ")
+                print(f"{bcolors.blanc}{bcolors.cyan}{joueur1}, l'{joueur2} n'a pas trouvé votre nombre en 10 essais, ce qui veut dire qu'il a malheureusement{bcolors.rouge} perdu{bcolors.blanc}{bcolors.cyan}. Bravo à vous {joueur1} ! ")
             
             else:
                 print(f"{bcolors.cyan}L'{joueur2} a {bcolors.blanc}{bcolors.vert}gagnez {bcolors.blanc}{bcolors.cyan}car il a trouvé le nombre de {joueur1} en {bcolors.blanc}{nombre_essai}{bcolors.cyan} essais")

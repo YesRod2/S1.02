@@ -168,24 +168,32 @@ if __name__ == "__main__" :
                     joueur2 = Choisir_Joueur2(score, choixJeu)
                     system('cls' if name == 'nt' else 'clear')
 
-                    # si un des joueurs est un ordinateur(=0) ou si les 2 joueurs ne sont pas des ordinateurs , on lance la fonction correspondante
+                    #Si joueur1 est un ordinateur ou joueur2 est un ordinateur
                     if joueur1 == 0 or joueur2 == 0 :   
-
                         if joueur1 != 0 and joueur2 == 0 :
 
+                            #Si joueur1 est un joueur et joueur2 est un ordinateur
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
                             resultat = Jeu_Devinette(score[joueur1-1].prenom, "Ordinateur2", difficulte)
 
                         elif joueur2 != 0 and joueur1 == 0 :
+
+                            #Si joueur2 est un joueur et joueur1 est un ordinateur
+                            #On ne donne pas de difficulté à l'ordinateur 1 car il donne le nombre aléatoire
                             resultat = Jeu_Devinette("Ordinateur1", score[joueur2-1].prenom, difficulte)
 
                         else:
+
+                            #Si les 2 joueurs sont des ordinateurs
+                            #On ne donne pas de difficulté à l'ordinateur 1 car il donne le nombre aléatoire
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
                             resultat = Jeu_Devinette("Ordinateur1", "Ordinateur2", difficulte)
 
                     else:
+
+                        #Si les 2 joueurs sont des joueurs
                         resultat = Jeu_Devinette(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte)
                         if resultat :
                             score[joueur1-1].score_devinette += 1
@@ -219,18 +227,25 @@ if __name__ == "__main__" :
                     joueur2 = Choisir_Joueur2(score, choixJeu)
                     system('cls' if name == 'nt' else 'clear')
 
+                    #Si joueur1 est un ordinateur ou joueur2 est un ordinateur
                     if joueur1 == 0 or joueur2 == 0 :   
                         if joueur1 != 0 and joueur2 == 0 :
+
+                            #Si joueur1 est un joueur et joueur2 est un ordinateur
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
                             resultat = Jeu_Allumettes(score[joueur1-1].prenom, "Ordinateur2", difficulte, difficulte2)
 
                         elif joueur2 != 0 and joueur1 == 0 :
+
+                            #Si joueur2 est un joueur et joueur1 est un ordinateur
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
                             resultat = Jeu_Allumettes("Ordinateur1", score[joueur2-1].prenom, difficulte, difficulte2)
 
                         else:
+
+                            #Si les 2 joueurs sont des ordinateurs
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
 
@@ -242,6 +257,8 @@ if __name__ == "__main__" :
                             resultat = Jeu_Allumettes("Ordinateur1", "Ordinateur2", difficulte, difficulte2)
 
                     else:
+
+                        #Si les 2 joueurs sont des joueurs
                         resultat = Jeu_Allumettes(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte, difficulte2)
                         if resultat :
                             score[joueur1-1].score_allumette += 1
@@ -273,21 +290,25 @@ if __name__ == "__main__" :
                     joueur2 = Choisir_Joueur2(score, choixJeu)
                     system('cls' if name == 'nt' else 'clear')
 
+                    #Si joueur1 est un ordinateur ou joueur2 est un ordinateur
                     if joueur1 == 0 or joueur2 == 0 :
                         if joueur1 != 0 and joueur2 == 0 :
 
+                            #Si joueur1 est un joueur et joueur2 est un ordinateur
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
                             resultat = Jeu_Morpion(score[joueur1-1].prenom, "Ordinateur2", difficulte, difficulte2)
 
                         elif joueur2 != 0 and joueur1 == 0 :
 
+                            #Si joueur2 est un joueur et joueur1 est un ordinateur
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
                             resultat = Jeu_Morpion("Ordinateur1", score[joueur2-1].prenom, difficulte, difficulte2)
 
                         else:
 
+                            #Si les 2 joueurs sont des ordinateurs
                             print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
                             difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
 
@@ -298,6 +319,8 @@ if __name__ == "__main__" :
                             resultat = Jeu_Morpion("Ordinateur1", "Ordinateur2", difficulte, difficulte2)
 
                     else:
+
+                        #Si les 2 joueurs sont des joueurs
                         resultat = Jeu_Morpion(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte, difficulte2)
                         if resultat :
                             score[joueur1-1].score_morpion += 1
