@@ -57,7 +57,10 @@ def Joueur(Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str
     """
     Colonne : int
     Ligne : int
+
     
+    # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+    #sinon le joueur joue
     if prenom == "Ordinateur1":
         if difficulte1 == 1:
             Ligne = randint(1, 3)
