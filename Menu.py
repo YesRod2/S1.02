@@ -20,7 +20,7 @@ def Charger_Sauvegarde(score : list[Joueurs]) -> list[Joueurs]:
     """
     Procédure qui charge le fichier binaire 
     ENTREE : la variable score, contenant les noms des joueurs et leurs scores
-    SORITE : RIEN
+    SORTIE : la liste des joueurs chargée depuis le fichier (ou la liste reçue si le fichier est absent)
     """
     f : BinaryIO
     if checkFileExistance("sauvegarde.bin"):
@@ -39,8 +39,8 @@ def Charger_Sauvegarde(score : list[Joueurs]) -> list[Joueurs]:
 
 def sauvegarde(score : list[Joueurs]) -> None:
     """
-    Procédure permattant de sauvegarder les joueurs et leurs scores dans un fichier binaire.
-    ENTREE : 3 variables, de type ListeJeu, contenant le nom du joueur et son score.
+    Procédure permettant de sauvegarder les joueurs et leurs scores dans un fichier binaire.
+    ENTREE : la liste des joueurs, contenant le nom de chaque joueur et ses scores.
     SORTIE : RIEN
     """
     f : BinaryIO
@@ -52,6 +52,21 @@ def sauvegarde(score : list[Joueurs]) -> None:
     print(bcolors.blanc + bcolors.jaune + "Appuyer sur Entrer pour continuer.")
     input()
     return None
+
+
+def Choisir_Difficulte(numero : int) -> int:
+    """
+    Fonction demandant la difficulté d'un ordinateur
+    ENTREE : le numéro de l'ordinateur (1 ou 2)
+    SORTIE : la difficulté, 1 pour aléatoire et 2 pour intelligent
+    """
+    difficulte : int
+
+    print(f"{bcolors.jaune}Voulez-vous que l'ordinateur {numero} soit aléatoire(1) ou intelligent(2) ?")
+    difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+    while difficulte != 1 and difficulte != 2 :   #fiabilisation
+        difficulte = int(input(bcolors.rouge + "Répondez par 1 (aléatoire) ou 2 (intelligent) : " + bcolors.blanc))
+    return difficulte
 
 
 def Menu() -> int:
@@ -89,7 +104,6 @@ if __name__ == "__main__" :
     nombre : int
     resultat : bool
     score : list[Joueurs]
-    score2 : list[Joueurs]
     joueur1 : int
     joueur2 : int
     difficulte : int
@@ -101,7 +115,6 @@ if __name__ == "__main__" :
     difficulte = 0
     difficulte2 = 0
     score = []
-    score2 = []
     score=Charger_Sauvegarde(score)
     
 
@@ -115,14 +128,7 @@ if __name__ == "__main__" :
                 choix_joueur = Menu_Joueurs()
 
                 if choix_joueur == 1:
-                    if len(score) == 0 :
-                        Ajouter_Joueurs(score)
-                        score = score
-
-                    else:
-                        Ajouter_Joueurs(score2)
-                        score += score2
-                        score2 = []
+                    Ajouter_Joueurs(score)
 
                 elif choix_joueur == 2 :
                     choix_classement = Menu_Classement()
@@ -165,7 +171,7 @@ if __name__ == "__main__" :
 
                 elif choix == 2 :
                     joueur1 = Choisir_Joueur1(score, choixJeu)
-                    joueur2 = Choisir_Joueur2(score, choixJeu)
+                    joueur2 = Choisir_Joueur2(score, choixJeu, joueur1)
                     system('cls' if name == 'nt' else 'clear')
 
                     #Si joueur1 est un ordinateur ou joueur2 est un ordinateur
@@ -173,8 +179,7 @@ if __name__ == "__main__" :
                         if joueur1 != 0 and joueur2 == 0 :
 
                             #Si joueur1 est un joueur et joueur2 est un ordinateur
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte = Choisir_Difficulte(2)
                             resultat = Jeu_Devinette(score[joueur1-1].prenom, "Ordinateur2", difficulte)
 
                         elif joueur2 != 0 and joueur1 == 0 :
@@ -187,8 +192,7 @@ if __name__ == "__main__" :
 
                             #Si les 2 joueurs sont des ordinateurs
                             #On ne donne pas de difficulté à l'ordinateur 1 car il donne le nombre aléatoire
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte = Choisir_Difficulte(2)
                             resultat = Jeu_Devinette("Ordinateur1", "Ordinateur2", difficulte)
 
                     else:
@@ -224,7 +228,7 @@ if __name__ == "__main__" :
                     system('cls' if name == 'nt' else 'clear')
                 elif choix == 2 :
                     joueur1 = Choisir_Joueur1(score, choixJeu)
-                    joueur2 = Choisir_Joueur2(score, choixJeu)
+                    joueur2 = Choisir_Joueur2(score, choixJeu, joueur1)
                     system('cls' if name == 'nt' else 'clear')
 
                     #Si joueur1 est un ordinateur ou joueur2 est un ordinateur
@@ -232,27 +236,23 @@ if __name__ == "__main__" :
                         if joueur1 != 0 and joueur2 == 0 :
 
                             #Si joueur1 est un joueur et joueur2 est un ordinateur
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte2 = Choisir_Difficulte(2)
                             resultat = Jeu_Allumettes(score[joueur1-1].prenom, "Ordinateur2", difficulte, difficulte2)
 
                         elif joueur2 != 0 and joueur1 == 0 :
 
                             #Si joueur2 est un joueur et joueur1 est un ordinateur
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte = Choisir_Difficulte(1)
                             resultat = Jeu_Allumettes("Ordinateur1", score[joueur2-1].prenom, difficulte, difficulte2)
 
                         else:
 
                             #Si les 2 joueurs sont des ordinateurs
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte = Choisir_Difficulte(1)
 
                             system('cls' if name == 'nt' else 'clear')
 
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte2 = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte2 = Choisir_Difficulte(2)
 
                             resultat = Jeu_Allumettes("Ordinateur1", "Ordinateur2", difficulte, difficulte2)
 
@@ -287,7 +287,7 @@ if __name__ == "__main__" :
                     system('cls' if name == 'nt' else 'clear')
                 elif choix == 2 :
                     joueur1 = Choisir_Joueur1(score, choixJeu)
-                    joueur2 = Choisir_Joueur2(score, choixJeu)
+                    joueur2 = Choisir_Joueur2(score, choixJeu, joueur1)
                     system('cls' if name == 'nt' else 'clear')
 
                     #Si joueur1 est un ordinateur ou joueur2 est un ordinateur
@@ -295,37 +295,34 @@ if __name__ == "__main__" :
                         if joueur1 != 0 and joueur2 == 0 :
 
                             #Si joueur1 est un joueur et joueur2 est un ordinateur
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte2 = Choisir_Difficulte(2)
                             resultat = Jeu_Morpion(score[joueur1-1].prenom, "Ordinateur2", difficulte, difficulte2)
 
                         elif joueur2 != 0 and joueur1 == 0 :
 
                             #Si joueur2 est un joueur et joueur1 est un ordinateur
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte = Choisir_Difficulte(1)
                             resultat = Jeu_Morpion("Ordinateur1", score[joueur2-1].prenom, difficulte, difficulte2)
 
                         else:
 
                             #Si les 2 joueurs sont des ordinateurs
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 1 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte = Choisir_Difficulte(1)
 
                             system('cls' if name == 'nt' else 'clear')
 
-                            print(bcolors.jaune + "Voulez-vous que l'ordinateur 2 soit aléatoire(1) ou intelligent(2) ?")
-                            difficulte2 = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+                            difficulte2 = Choisir_Difficulte(2)
                             resultat = Jeu_Morpion("Ordinateur1", "Ordinateur2", difficulte, difficulte2)
 
                     else:
 
                         #Si les 2 joueurs sont des joueurs
                         resultat = Jeu_Morpion(score[joueur1-1].prenom, score[joueur2-1].prenom, difficulte, difficulte2)
-                        if resultat :
+                        if resultat == True :
                             score[joueur1-1].score_morpion += 1
-                        else:
+                        elif resultat == False :
                             score[joueur2-1].score_morpion += 1
+                        #si resultat vaut None, c'est un match nul : personne ne marque de point
                     input()
                     system('cls' if name == 'nt' else 'clear')
 
