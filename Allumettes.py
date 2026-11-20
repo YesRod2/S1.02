@@ -12,9 +12,9 @@ def Regle_Allumettes() -> None:
     print(bcolors.cyan + "------------------------------------------------------------------------------------------")
     print(bcolors.cyan + "------------------------------------------------------------------------------------------")
     print(bcolors.jaune + "                     Règle du Jeu :")
-    print("- Ce jeu se joue à 2 nombres.")
+    print("- Ce jeu se joue à 2 joueurs.")
     print("- On dispose d'un tas de 20 allumettes.")
-    print("-Chaque nombre à tour de rôle peut en prélever 1, 2 ou 3.")
+    print("- Chaque joueur à tour de rôle peut en prélever 1, 2 ou 3.")
     print("- Le perdant est celui qui prend la dernière allumette")
     print()
     print(bcolors.bleu + "Appuyer sur entrer pour continuer.")
@@ -56,6 +56,7 @@ def Jeu_Allumettes(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 
     prenom : str
     compteur : int
     nombre : int
+    maximum : int
     resultat : int
 
     resultat = 0
@@ -99,9 +100,10 @@ def Jeu_Allumettes(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 
             if difficulte2 == 1:
                 if len(allumettes) == 3:
                     nombre = randint(1, 2)
-                if len(allumettes) == 2:
+                elif len(allumettes) == 2:
                     nombre = 1
-                nombre = randint(1, 3)
+                else:
+                    nombre = randint(1, 3)
 
             else:
 
@@ -116,9 +118,12 @@ def Jeu_Allumettes(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 
 
         else:
 
+            #On ne peut pas prendre toutes les allumettes restantes : il doit en rester au moins une
+            #(prendre la dernière allumette fait perdre, donc on l'interdit directement)
+            maximum = min(3, len(allumettes) - 1)
             nombre = int(input(f"{bcolors.cyan}{prenom}, combien d'allumettes voulez-vous enlever ? : " + bcolors.blanc))    # le joueur choisis combien d'allumette il veut enlever
-            while nombre < 1 or nombre > 3:    #fiabilisation pour respecter les règles du jeu
-                nombre = int(input(bcolors.rouge + "Vous ne pouvez enlever que 1, 2 ou 3 allumettes ! Recommencez : " + bcolors.blanc))
+            while nombre < 1 or nombre > maximum:    #fiabilisation pour respecter les règles du jeu
+                nombre = int(input(f"{bcolors.rouge}Vous ne pouvez enlever qu'entre 1 et {maximum} allumette(s) ! Recommencez : {bcolors.blanc}"))
 
         resultat += 1
 
@@ -133,7 +138,7 @@ def Jeu_Allumettes(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 
         print() #saut de ligne pour une meilleur visibilité
 
         
-        if len(allumettes) == 1 :    # condition "si/sinon" permettant de savoir si le nombre a gagner, sinon au tour du nombre2 de jouer
+        if len(allumettes) == 1 :    # condition "si/sinon" permettant de savoir quel joueur a gagné
             if resultat%2 !=0 :
                 print(f"{bcolors.vert}{joueur1}, Vous avez gagné !{bcolors.blanc}")
                 print(f"{bcolors.rouge}{joueur2}, Vous avez perdu :( {bcolors.blanc}")
@@ -141,6 +146,7 @@ def Jeu_Allumettes(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 
             else:
                 print(f"{bcolors.vert}{joueur2}, Vous avez gagné !{bcolors.blanc}")
                 print(f"{bcolors.rouge}{joueur1}, Vous avez perdu :( {bcolors.blanc}")
+                return False
 
        
     return False
