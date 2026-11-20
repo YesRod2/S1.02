@@ -49,21 +49,31 @@ def Menu_Classement() -> int :
 
 def Ajouter_Joueurs(score_Joueur : list[Joueurs]) -> None:
     """
-    Procédure Ajoutant de nouveau joueur à l'application
-    Entrée : un scoreleau de liste joueurs contenant le nom du joueur et son score
+    Procédure ajoutant un nouveau joueur à l'application
+    Entrée : la liste des joueurs, contenant le nom de chaque joueur et ses scores
     Sortie : RIEN
     """
     new_joueur : Joueurs
+    prenoms : list[str]
+
+    prenoms = [joueur.prenom for joueur in score_Joueur]   #noms des joueurs déjà inscrits
 
     new_joueur = Joueurs()
-    new_joueur.prenom = input(bcolors.blanc + bcolors.cyan + "Quel est le nom du joueur que vous voulez ajouter ? : "+ bcolors.blanc) 
+    new_joueur.prenom = input(bcolors.blanc + bcolors.cyan + "Quel est le nom du joueur que vous voulez ajouter ? : "+ bcolors.blanc).strip()
+
+    #fiabilisation : le nom ne doit pas être vide, ni déjà pris (sinon on ne peut plus distinguer les joueurs)
+    #"Ordinateur1" et "Ordinateur2" sont réservés aux robots
+    while new_joueur.prenom == "" or new_joueur.prenom in prenoms or new_joueur.prenom in ["Ordinateur1", "Ordinateur2"]:
+        print(bcolors.rouge + "Ce nom est vide, déjà utilisé ou réservé aux ordinateurs !")
+        new_joueur.prenom = input(bcolors.blanc + bcolors.cyan + "Entrez un autre nom : " + bcolors.blanc).strip()
+
     score_Joueur.append(new_joueur)
     return None
 
 def Classement_Devinette(score : list[Joueurs]) -> None :
     """
-    Procédure  permettant d'afficher le classement de chaque jeux.
-    ENTREE : 3 variables, de type ListeJeu, contenant le nom du joueur et son score.
+    Procédure permettant d'afficher le classement du jeu.
+    ENTREE : la liste des joueurs, contenant le nom de chaque joueur et ses scores.
     SORTIE : rien
     """
     i : int
@@ -89,8 +99,8 @@ def Classement_Devinette(score : list[Joueurs]) -> None :
 
 def Classement_Allumette(score : list[Joueurs]) -> None :
     """
-    Procédure  permettant d'afficher le classement de chaque jeux.
-    ENTREE : 3 variables, de type ListeJeu, contenant le nom du joueur et son score.
+    Procédure permettant d'afficher le classement du jeu.
+    ENTREE : la liste des joueurs, contenant le nom de chaque joueur et ses scores.
     SORTIE : rien
     """
     i : int
@@ -116,8 +126,8 @@ def Classement_Allumette(score : list[Joueurs]) -> None :
 
 def Classement_Morpion(score : list[Joueurs]) -> None :
     """
-    Procédure  permettant d'afficher le classement de chaque jeux.
-    ENTREE : 3 variables, de type ListeJeu, contenant le nom du joueur et son score.
+    Procédure permettant d'afficher le classement du jeu.
+    ENTREE : la liste des joueurs, contenant le nom de chaque joueur et ses scores.
     SORTIE : rien
     """
     i : int
@@ -149,6 +159,8 @@ def Choisir_Joueur1(score : list[Joueurs], choixJeu : int) -> int :
     """
     joueur1 : int
     joueur1 = int(input(bcolors.jaune + "Voulez vous que le joueur1 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc))
+    while joueur1 != 0 and joueur1 != 1 :   #fiabilisation
+        joueur1 = int(input(bcolors.rouge + "Répondez par 0 (oui) ou 1 (non) : " + bcolors.blanc))
     if joueur1 == 0 :
         return joueur1
     else :
@@ -167,18 +179,22 @@ def Choisir_Joueur1(score : list[Joueurs], choixJeu : int) -> int :
     print("Regardez le classement ci-dessus pour connaitre votre id.")
     print()
     joueur1 = int(input("Quel est l'id du joueur 1 : " + bcolors.blanc))
+    while joueur1 < 1 or joueur1 > len(score) :   #fiabilisation : l'id doit exister dans le classement
+        joueur1 = int(input(f"{bcolors.rouge}Cet id n'existe pas, entrez un id entre 1 et {len(score)} : {bcolors.blanc}"))
     
     return joueur1
 
-def Choisir_Joueur2(score : list[Joueurs], choixJeu : int) -> int :
+def Choisir_Joueur2(score : list[Joueurs], choixJeu : int, joueur1 : int = 0) -> int :
     """
-    Fonction permettant de choisir le joueur 1 pour jouer à un jeu
-    ENTREE : la liste des joueurs, le choix du jeu 
+    Fonction permettant de choisir le joueur 2 pour jouer à un jeu
+    ENTREE : la liste des joueurs, le choix du jeu, l'id du joueur 1 (0 si c'est un robot)
     SORTIE : le joueur 2
     """
     system('cls' if name == 'nt' else 'clear')
     joueur2 : int
     joueur2 = int(input(bcolors.jaune + "Voulez vous que le joueur2 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc))
+    while joueur2 != 0 and joueur2 != 1 :   #fiabilisation
+        joueur2 = int(input(bcolors.rouge + "Répondez par 0 (oui) ou 1 (non) : " + bcolors.blanc))
     if joueur2 == 0 :
         return joueur2
     if choixJeu == 2 :
@@ -196,6 +212,11 @@ def Choisir_Joueur2(score : list[Joueurs], choixJeu : int) -> int :
     print("Regardez le classement ci-dessus pour connaitre votre id.")
     print()
     joueur2 = int(input("Quel est l'id du joueur 2 : " + bcolors.blanc))
+    #fiabilisation : l'id doit exister et le joueur 2 ne peut pas être le joueur 1
+    while joueur2 < 1 or joueur2 > len(score) or joueur2 == joueur1 :
+        if joueur2 == joueur1 :
+            print(bcolors.rouge + "Ce joueur est déjà le joueur 1 !")
+        joueur2 = int(input(f"{bcolors.rouge}Entrez un id entre 1 et {len(score)} : {bcolors.blanc}"))
     
     return joueur2
 
@@ -203,7 +224,7 @@ def Tri_Devinette(score : list[Joueurs]) -> list[Joueurs]:
     """
     Tri le tableau de façon tri à bulle
     ENTREE : le tableau contenant les joueurs et leurs scores
-    SORTIE : RIEN
+    SORTIE : le tableau trié par score décroissant
     """
     n : int
     p : int
@@ -212,7 +233,6 @@ def Tri_Devinette(score : list[Joueurs]) -> list[Joueurs]:
     echange : bool
 
     joueurTemp = Joueurs()
-    print(score)
     n = len(score)
     p = n-1
     echange = True
@@ -231,7 +251,7 @@ def Tri_Allumette(score : list[Joueurs]) -> list[Joueurs]:
     """
     Tri le tableau de façon tri à bulle
     ENTREE : le tableau contenant les joueurs et leurs scores
-    SORTIE : RIEN
+    SORTIE : le tableau trié par score décroissant
     """
 
     n : int
@@ -258,7 +278,7 @@ def Tri_Morpion(score : list[Joueurs]) -> list[Joueurs]:
     """
     Tri le tableau de façon tri à bulle
     ENTREE : le tableau contenant les joueurs et leurs scores
-    SORTIE : RIEN
+    SORTIE : le tableau trié par score décroissant
     """
     
     n : int
