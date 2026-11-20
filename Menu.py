@@ -6,6 +6,7 @@ from os import system , name
 from bcolors import bcolors
 from typing import BinaryIO
 import pickle
+from Saisie import Saisir_Entier
 
 
 def checkFileExistance(filePath)->bool:
@@ -63,9 +64,9 @@ def Choisir_Difficulte(numero : int) -> int:
     difficulte : int
 
     print(f"{bcolors.jaune}Voulez-vous que l'ordinateur {numero} soit aléatoire(1) ou intelligent(2) ?")
-    difficulte = int(input("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc))
+    difficulte = Saisir_Entier("1- Aléatoire\n2- Intelligent\nVotre choix : "+ bcolors.blanc)
     while difficulte != 1 and difficulte != 2 :   #fiabilisation
-        difficulte = int(input(bcolors.rouge + "Répondez par 1 (aléatoire) ou 2 (intelligent) : " + bcolors.blanc))
+        difficulte = Saisir_Entier(bcolors.rouge + "Répondez par 1 (aléatoire) ou 2 (intelligent) : " + bcolors.blanc)
     return difficulte
 
 
@@ -85,11 +86,11 @@ def Menu() -> int:
     print("4. Jeu du Morpion")
     print("5. Quitter l'application")
     print() #saut de ligne pour une meilleur visibilité
-    choix = int(input(bcolors.blanc + bcolors.jaune + "Quel est votre choix ? : " + bcolors.blanc))
+    choix = Saisir_Entier(bcolors.blanc + bcolors.jaune + "Quel est votre choix ? : " + bcolors.blanc)
 
     while(choix < 1 or choix > 5):  #fiabilisation pour faire le bon choix de jeu ou pour quitter l'application
         print(bcolors.rouge + "Vous vous êtes trompé, veuillez relire le menu et recommencer s'il vous plaît. Merci ! " + bcolors.reset)
-        choix = int(input(bcolors.blanc + bcolors.jaune + "Entrez à nouveau selon les choix au dessus : " + bcolors.blanc))
+        choix = Saisir_Entier(bcolors.blanc + bcolors.jaune + "Entrez à nouveau selon les choix au dessus : " + bcolors.blanc)
 
 
     return choix
@@ -157,11 +158,11 @@ if __name__ == "__main__" :
             choix = 0
             while choix != 3: 
                 print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
-                choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))  #les joueurs choisissent ce qu'ils veulent faire
+                choix = Saisir_Entier("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc)  #les joueurs choisissent ce qu'ils veulent faire
 
                 while  choix < 1 or choix > 3 :    #fiabilisation
                     print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
-                    choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
+                    choix = Saisir_Entier("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc)
                 system('cls' if name == 'nt' else 'clear')
 
                 if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
@@ -215,11 +216,11 @@ if __name__ == "__main__" :
             choix = 0
             while choix != 3:
                 print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
-                choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
+                choix = Saisir_Entier("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc)
 
                 while  choix < 1 or choix > 3 :
                     print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
-                    choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
+                    choix = Saisir_Entier("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc)
                 system('cls' if name == 'nt' else 'clear')
 
                 if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu
@@ -273,12 +274,12 @@ if __name__ == "__main__" :
             choix = 0
             while choix != 3:
                 print(bcolors.jaune + "Vous avez le choix entre lire les règles du jeu ou jouer.")
-                choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
+                choix = Saisir_Entier("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc)
 
                 while  choix < 1 or choix > 3 :    #fiabilisation
 
                     print(bcolors.jaune + "Vous n'avez pas entré une bonne valeur !")
-                    choix = int(input("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc))
+                    choix = Saisir_Entier("1- Lire les règles.\n2- Jouer au jeu.\n3- Revenir au menu Principal.\nVotre choix : "+ bcolors.blanc)
                 system('cls' if name == 'nt' else 'clear')
 
                 if  choix == 1 :   #condition si/sinon qui soit donne les règle du jeu soit lance le jeu

@@ -1,6 +1,7 @@
 from os import system, name
 from bcolors import bcolors
 from random import choice
+from Saisie import Saisir_Entier
 
 def Regle_Morpion() -> None:
     """
@@ -144,8 +145,8 @@ def Joueur(Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str
 
     else:
         print(f"{bcolors.blanc}{bcolors.cyan}{prenom}, à vous de jouer, entrez les coordonnées X (ligne) et Y (colonne) entre 1 et 3")
-        Ligne = int(input(f"{prenom}, entrez la coordonnée en X (entre 1 et 3) : {bcolors.blanc}" ))
-        Colonne = int(input(f"{bcolors.blanc}{bcolors.cyan}{prenom}, entrez la coordonnée en Y (entre 1 et 3) : {bcolors.blanc}"))
+        Ligne = Saisir_Entier(f"{prenom}, entrez la coordonnée en X (entre 1 et 3) : {bcolors.blanc}" )
+        Colonne = Saisir_Entier(f"{bcolors.blanc}{bcolors.cyan}{prenom}, entrez la coordonnée en Y (entre 1 et 3) : {bcolors.blanc}")
     
 
     #Vérifie si les coordonnées sont bonne (pas strictement inférieur à 1 et pas strictement supérieur à 3)
@@ -153,11 +154,11 @@ def Joueur(Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str
         #Vérifie si le problème viens des coordonnées de la colonne
         if(Colonne < 1 or Colonne > 3):
             print(f"{bcolors.blanc}{bcolors.cyan}Vous avez entrée une coordonnée en colonne {bcolors.rouge}incorrect !")
-            Colonne = int(input(f"{bcolors.blanc}{bcolors.cyan}Entrez à nouveau une coordonnée de la colonne (compris entre 1 et 3): {bcolors.blanc}"))
+            Colonne = Saisir_Entier(f"{bcolors.blanc}{bcolors.cyan}Entrez à nouveau une coordonnée de la colonne (compris entre 1 et 3): {bcolors.blanc}")
             #Ou si le problème viens des lignes
         elif(Ligne < 1 or Ligne > 3):
             print(f"{bcolors.blanc}{bcolors.cyan}Vous avez entrée une coordonnée en ligne {bcolors.rouge}incorrect !")
-            Ligne = int(input(f"{bcolors.blanc}{bcolors.cyan}Entrez à nouveau une coordonnée de la ligne (compris entre 1 et 3): {bcolors.blanc}"))
+            Ligne = Saisir_Entier(f"{bcolors.blanc}{bcolors.cyan}Entrez à nouveau une coordonnée de la ligne (compris entre 1 et 3): {bcolors.blanc}")
 
     #Envois dans la fonction pour placer le pion du joueur sur la case entrée par le joueur
     JeuJoueur(Colonne, Ligne, Tableau, prenom, joueur1, joueur2, difficulte1, difficulte2, nb_tours)

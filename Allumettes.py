@@ -1,6 +1,7 @@
 from bcolors import bcolors
 from os import system, name
 from random import randint
+from Saisie import Saisir_Entier
 
 
 def Regle_Allumettes() -> None:
@@ -121,9 +122,9 @@ def Jeu_Allumettes(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 
             #On ne peut pas prendre toutes les allumettes restantes : il doit en rester au moins une
             #(prendre la dernière allumette fait perdre, donc on l'interdit directement)
             maximum = min(3, len(allumettes) - 1)
-            nombre = int(input(f"{bcolors.cyan}{prenom}, combien d'allumettes voulez-vous enlever ? : " + bcolors.blanc))    # le joueur choisis combien d'allumette il veut enlever
+            nombre = Saisir_Entier(f"{bcolors.cyan}{prenom}, combien d'allumettes voulez-vous enlever ? : " + bcolors.blanc)    # le joueur choisis combien d'allumette il veut enlever
             while nombre < 1 or nombre > maximum:    #fiabilisation pour respecter les règles du jeu
-                nombre = int(input(f"{bcolors.rouge}Vous ne pouvez enlever qu'entre 1 et {maximum} allumette(s) ! Recommencez : {bcolors.blanc}"))
+                nombre = Saisir_Entier(f"{bcolors.rouge}Vous ne pouvez enlever qu'entre 1 et {maximum} allumette(s) ! Recommencez : {bcolors.blanc}")
 
         resultat += 1
 

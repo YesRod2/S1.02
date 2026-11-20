@@ -2,6 +2,7 @@ from os import system, name
 from bcolors import bcolors
 from random import randint
 from time import sleep
+from Saisie import Saisir_Entier
 
 
 def Regle_Devinette() -> None:
@@ -53,9 +54,9 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
         choix_joueur1 = randint(1, 100)
 
     else:
-        choix_joueur1 = int(input(f"{bcolors.blanc}{bcolors.cyan}{joueur1}, Choisissez un nombre entre {bcolors.blanc}1 {bcolors.cyan}et {bcolors.blanc}100{bcolors.cyan} : {bcolors.blanc}"))   #le joueur1 choisis le nombre que le joueur2 doit trouver
+        choix_joueur1 = Saisir_Entier(f"{bcolors.blanc}{bcolors.cyan}{joueur1}, Choisissez un nombre entre {bcolors.blanc}1 {bcolors.cyan}et {bcolors.blanc}100{bcolors.cyan} : {bcolors.blanc}")   #le joueur1 choisis le nombre que le joueur2 doit trouver
         while choix_joueur1 > 100 or choix_joueur1 < 1 :   #fiabilisation pour respecter les règles du jeu
-            choix_joueur1 = int(input(bcolors.rouge + "Vous avez dépassé la limite choisis, veuillez de nouveau donner un nombre : " + bcolors.blanc))
+            choix_joueur1 = Saisir_Entier(bcolors.rouge + "Vous avez dépassé la limite choisis, veuillez de nouveau donner un nombre : " + bcolors.blanc)
     system('cls' if name == 'nt' else 'clear')
 
 
@@ -77,10 +78,10 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
 
     else:
 
-        choix_joueur2 = int(input("Quel est votre nombre : " + bcolors.blanc))   #choix du premier nombre du joueur2
+        choix_joueur2 = Saisir_Entier("Quel est votre nombre : " + bcolors.blanc)   #choix du premier nombre du joueur2
         while choix_joueur2 > 100 or choix_joueur2 < 1 :   #fiabilisation pour respecter les règles du jeu
             print(bcolors.rouge + "Pour rappel, le nombre choisis est entre " + bcolors.blanc + "1 " + bcolors.rouge + "et " + bcolors.blanc +"100" + bcolors.rouge + ": " + bcolors.blanc)
-            choix_joueur2 = int(input(bcolors.cyan + "Votre nombre : " + bcolors.blanc))
+            choix_joueur2 = Saisir_Entier(bcolors.cyan + "Votre nombre : " + bcolors.blanc)
 
     #boucle "tant que" permettant de faire tourner le jeu, jusqu'à ce que le joueur2 trouve le bon nombre ou qu'il ai épuisé ses 10 essais 
     while choix_joueur2 != choix_joueur1 and essai != 0 :   
@@ -140,9 +141,9 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
                     choix_joueur2 = (min + max) // 2   #recherche par dichotomie : on prend le milieu
 
             else:
-                choix_joueur2 = int(input(f"{bcolors.blanc}{bcolors.cyan}{joueur2}, votre nombre est trop grand, donnez-en un nouveau : {bcolors.blanc}"))  #le joueur2 rechoisit donc un nombre
+                choix_joueur2 = Saisir_Entier(f"{bcolors.blanc}{bcolors.cyan}{joueur2}, votre nombre est trop grand, donnez-en un nouveau : {bcolors.blanc}")  #le joueur2 rechoisit donc un nombre
                 while choix_joueur2 > 100 or choix_joueur2 < 1 :   #fiabilisation pour respecter les règles du jeu
-                    choix_joueur2 = int(input(f"{bcolors.rouge}Le nombre doit être entre {bcolors.blanc}1{bcolors.rouge} et {bcolors.blanc}100{bcolors.rouge} : {bcolors.blanc}"))
+                    choix_joueur2 = Saisir_Entier(f"{bcolors.rouge}Le nombre doit être entre {bcolors.blanc}1{bcolors.rouge} et {bcolors.blanc}100{bcolors.rouge} : {bcolors.blanc}")
         
         else:
             essai -= 1
@@ -159,9 +160,9 @@ def Jeu_Devinette(joueur1 : str, joueur2 : str, difficulte : int) -> bool:
                 else:
                     choix_joueur2 = (min + max) // 2   #recherche par dichotomie : on prend le milieu
             else:
-                choix_joueur2 = int(input(f"{bcolors.blanc}{bcolors.cyan}{joueur2}, votre nombre est trop petit, donnez-en un nouveau : {bcolors.blanc}"))  #le joueur2 rechoisit donc un nombre
+                choix_joueur2 = Saisir_Entier(f"{bcolors.blanc}{bcolors.cyan}{joueur2}, votre nombre est trop petit, donnez-en un nouveau : {bcolors.blanc}")  #le joueur2 rechoisit donc un nombre
                 while choix_joueur2 > 100 or choix_joueur2 < 1 :   #fiabilisation pour respecter les règles du jeu
-                    choix_joueur2 = int(input(f"{bcolors.rouge}Le nombre doit être entre {bcolors.blanc}1{bcolors.rouge} et {bcolors.blanc}100{bcolors.rouge} : {bcolors.blanc}"))
+                    choix_joueur2 = Saisir_Entier(f"{bcolors.rouge}Le nombre doit être entre {bcolors.blanc}1{bcolors.rouge} et {bcolors.blanc}100{bcolors.rouge} : {bcolors.blanc}")
 
 
     system('cls' if name == 'nt' else 'clear')

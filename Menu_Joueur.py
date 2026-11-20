@@ -1,5 +1,6 @@
 from bcolors import *
 from os import system, name
+from Saisie import Saisir_Entier
 
 class Joueurs :
     prenom : str
@@ -23,11 +24,11 @@ def Menu_Joueurs() -> int:
     print("2. Accéder au menu du classement")
     print("3. Quitter le menu des joueurs et revenir à l'application de jeu")
     print()
-    choix = int(input("Quel est votre choix ? : " + bcolors.blanc))
+    choix = Saisir_Entier("Quel est votre choix ? : " + bcolors.blanc)
 
     while(choix < 1 or choix > 3):  #fiabilisation pour faire le bon choix de jeu ou pour quitter l'application
         print(bcolors.rouge + "Vous vous êtes trompé, veuillez relire le menu et recommencer s'il vous plaît. Merci ! " + bcolors.reset)
-        choix = int(input(bcolors.jaune + "Entrez à nouveau selon les choix au dessus : " + bcolors.blanc))
+        choix = Saisir_Entier(bcolors.jaune + "Entrez à nouveau selon les choix au dessus : " + bcolors.blanc)
     return choix
 
 
@@ -40,11 +41,11 @@ def Menu_Classement() -> int :
     print(bcolors.blanc + bcolors.jaune + "1. Classement Devinette")
     print("2. Classement Allumette")
     print("3. Classement Morpion")
-    choix = int(input("Quel est votre choix ? : " + bcolors.blanc))
+    choix = Saisir_Entier("Quel est votre choix ? : " + bcolors.blanc)
 
     while(choix < 1 or choix > 3):  #fiabilisation pour faire le bon choix de jeu ou pour quitter l'application
         print(bcolors.rouge + "Vous vous êtes trompé, veuillez relire le menu et recommencer s'il vous plaît. Merci ! " + bcolors.reset)
-        choix = int(input(bcolors.jaune + "Entrez à nouveau selon les choix au dessus : " + bcolors.blanc))
+        choix = Saisir_Entier(bcolors.jaune + "Entrez à nouveau selon les choix au dessus : " + bcolors.blanc)
     return choix
 
 def Ajouter_Joueurs(score_Joueur : list[Joueurs]) -> None:
@@ -158,9 +159,9 @@ def Choisir_Joueur1(score : list[Joueurs], choixJeu : int) -> int :
     SORTIE : le joueur 1
     """
     joueur1 : int
-    joueur1 = int(input(bcolors.jaune + "Voulez vous que le joueur1 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc))
+    joueur1 = Saisir_Entier(bcolors.jaune + "Voulez vous que le joueur1 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc)
     while joueur1 != 0 and joueur1 != 1 :   #fiabilisation
-        joueur1 = int(input(bcolors.rouge + "Répondez par 0 (oui) ou 1 (non) : " + bcolors.blanc))
+        joueur1 = Saisir_Entier(bcolors.rouge + "Répondez par 0 (oui) ou 1 (non) : " + bcolors.blanc)
     if joueur1 == 0 :
         return joueur1
     else :
@@ -178,9 +179,9 @@ def Choisir_Joueur1(score : list[Joueurs], choixJeu : int) -> int :
     print(bcolors.cyan + "Le choix du joueur se fait avec son id.")
     print("Regardez le classement ci-dessus pour connaitre votre id.")
     print()
-    joueur1 = int(input("Quel est l'id du joueur 1 : " + bcolors.blanc))
+    joueur1 = Saisir_Entier("Quel est l'id du joueur 1 : " + bcolors.blanc)
     while joueur1 < 1 or joueur1 > len(score) :   #fiabilisation : l'id doit exister dans le classement
-        joueur1 = int(input(f"{bcolors.rouge}Cet id n'existe pas, entrez un id entre 1 et {len(score)} : {bcolors.blanc}"))
+        joueur1 = Saisir_Entier(f"{bcolors.rouge}Cet id n'existe pas, entrez un id entre 1 et {len(score)} : {bcolors.blanc}")
     
     return joueur1
 
@@ -192,9 +193,9 @@ def Choisir_Joueur2(score : list[Joueurs], choixJeu : int, joueur1 : int = 0) ->
     """
     system('cls' if name == 'nt' else 'clear')
     joueur2 : int
-    joueur2 = int(input(bcolors.jaune + "Voulez vous que le joueur2 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc))
+    joueur2 = Saisir_Entier(bcolors.jaune + "Voulez vous que le joueur2 soit un robot ? (0 pour oui, 1 pour non) : "+ bcolors.blanc)
     while joueur2 != 0 and joueur2 != 1 :   #fiabilisation
-        joueur2 = int(input(bcolors.rouge + "Répondez par 0 (oui) ou 1 (non) : " + bcolors.blanc))
+        joueur2 = Saisir_Entier(bcolors.rouge + "Répondez par 0 (oui) ou 1 (non) : " + bcolors.blanc)
     if joueur2 == 0 :
         return joueur2
     if choixJeu == 2 :
@@ -211,12 +212,12 @@ def Choisir_Joueur2(score : list[Joueurs], choixJeu : int, joueur1 : int = 0) ->
     print(bcolors.cyan + "Le choix du joueur se fait avec son id.")
     print("Regardez le classement ci-dessus pour connaitre votre id.")
     print()
-    joueur2 = int(input("Quel est l'id du joueur 2 : " + bcolors.blanc))
+    joueur2 = Saisir_Entier("Quel est l'id du joueur 2 : " + bcolors.blanc)
     #fiabilisation : l'id doit exister et le joueur 2 ne peut pas être le joueur 1
     while joueur2 < 1 or joueur2 > len(score) or joueur2 == joueur1 :
         if joueur2 == joueur1 :
             print(bcolors.rouge + "Ce joueur est déjà le joueur 1 !")
-        joueur2 = int(input(f"{bcolors.rouge}Entrez un id entre 1 et {len(score)} : {bcolors.blanc}"))
+        joueur2 = Saisir_Entier(f"{bcolors.rouge}Entrez un id entre 1 et {len(score)} : {bcolors.blanc}")
     
     return joueur2
 
