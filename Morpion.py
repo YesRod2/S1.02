@@ -1,10 +1,10 @@
 from os import system, name
 from bcolors import bcolors
-from random import randint,choice
+from random import choice
 
 def Regle_Morpion() -> None:
     """
-    Procédure expliquant les règles de la devinette.
+    Procédure expliquant les règles du morpion.
     Entrée : RIEN
     Sortie : RIEN
     """
@@ -13,7 +13,8 @@ def Regle_Morpion() -> None:
     print(bcolors.jaune + "                     Règle du Jeu :")
     print("- Ce jeu se joue à 2 joueurs.")
     print("- Chaque joueur pose sa marque (O ou X) à tour de rôle dans les cases d'une grille 3x3.")
-    print("- Le premier qui aligne 3 marques a gangé.")
+    print("- Le premier qui aligne 3 marques a gagné.")
+    print("- Si la grille est pleine et que personne n'a aligné 3 marques, c'est un match nul.")
     print()
     print(bcolors.bleu + "Appuyer sur entrer pour continuer.")
     print(bcolors.cyan + "------------------------------------------------------------------------------------------")
@@ -41,6 +42,59 @@ def TableauVide() -> list[list[str]]:
     return Tableau
 
 
+def CasesVides(Tableau : list[list[str]]) -> list[list[int]]:
+    """
+    Fonction qui donne la liste des cases encore libres
+    ENTREE : le tableau du morpion
+    SORTIE : une liste de cases [Colonne, Ligne] (entre 1 et 3)
+    """
+    cases : list[list[int]]
+    cases = []
+    for colonne in range(3):
+        for ligne in range(3):
+            if Tableau[colonne][ligne] == " ":
+                cases.append([colonne + 1, ligne + 1])
+    return cases
+
+
+def CoupIntelligent(Tableau : list[list[str]], symbole : str, symbole_adverse : str) -> list[int]:
+    """
+    Fonction qui choisit la meilleure case pour l'ordinateur intelligent
+    ENTREE :
+            - `Tableau`, le tableau du morpion.
+            - `symbole`, le symbole de l'ordinateur ("X" ou "O").
+            - `symbole_adverse`, le symbole de l'adversaire.
+    SORTIE : une case [Colonne, Ligne] (entre 1 et 3)
+    """
+    cases : list[list[int]]
+    case : list[int]
+    marque : str
+
+    cases = CasesVides(Tableau)
+
+    #1) On cherche d'abord une case qui fait gagner l'ordinateur,
+    #2) sinon une case qui empêche l'adversaire de gagner
+    for marque in [symbole, symbole_adverse]:
+        for case in cases:
+            Tableau[case[0] - 1][case[1] - 1] = marque   #on essaie la case
+            if VerifierGagne(Tableau):
+                Tableau[case[0] - 1][case[1] - 1] = " "  #on annule l'essai
+                return case
+            Tableau[case[0] - 1][case[1] - 1] = " "      #on annule l'essai
+
+    #3) Sinon on prend le centre s'il est libre
+    if [2, 2] in cases:
+        return [2, 2]
+
+    #4) Sinon un coin libre
+    for case in [[1, 1], [1, 3], [3, 1], [3, 3]]:
+        if case in cases:
+            return case
+
+    #5) Sinon n'importe quelle case libre
+    return choice(cases)
+
+
 def Joueur(Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : int, nb_tours : int) -> None:
     """
     Procédure permettant au joueur1 de choisir où placer son point
@@ -57,27 +111,37 @@ def Joueur(Tableau : list[list[str]], prenom : str, joueur1 : str, joueur2 : str
     """
     Colonne : int
     Ligne : int
+    case : list[int]
+    difficulte : int
+    symbole : str
+    symbole_adverse : str
 
-    
+
     # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
     #sinon le joueur joue
-    if prenom == "Ordinateur1":
-        if difficulte1 == 1:
-            Ligne = randint(1, 3)
-            Colonne = randint(1, 3)
-        else:
-            if nb_tours == 1 or nb_tours == 2:
-                Ligne = choice([1, 3])
-                Colonne = choice([1, 3])
+    if prenom == "Ordinateur1" or prenom == "Ordinateur2":
 
-    elif prenom == "Ordinateur2":
-        if difficulte2 == 1:
-            Ligne = randint(1, 3)
-            Colonne = randint(1, 3)
+        #Le joueur 1 joue les X et le joueur 2 joue les O
+        if prenom == joueur1:
+            symbole = "X"
+            symbole_adverse = "O"
         else:
-            if nb_tours == 1 or nb_tours == 2:
-                Ligne = choice([1, 3])
-                Colonne = choice([1, 3])
+            symbole = "O"
+            symbole_adverse = "X"
+
+        if prenom == "Ordinateur1":
+            difficulte = difficulte1
+        else:
+            difficulte = difficulte2
+
+        #1 = aléatoire (parmi les cases libres), 2 = intelligent
+        if difficulte == 1:
+            case = choice(CasesVides(Tableau))
+        else:
+            case = CoupIntelligent(Tableau, symbole, symbole_adverse)
+        Colonne = case[0]
+        Ligne = case[1]
+
     else:
         print(f"{bcolors.blanc}{bcolors.cyan}{prenom}, à vous de jouer, entrez les coordonnées X (ligne) et Y (colonne) entre 1 et 3")
         Ligne = int(input(f"{prenom}, entrez la coordonnée en X (entre 1 et 3) : {bcolors.blanc}" ))
@@ -194,15 +258,15 @@ def AfficherTableau(Tableau: list[list[str]]) -> None:
 
     return None
 
-def Jeu_Morpion(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : int) -> None :
+def Jeu_Morpion(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : int) -> bool | None :
     """
-    Procédure faisant tourner le jeu du morpion
-    ENTREE : 
+    Fonction faisant tourner le jeu du morpion
+    ENTREE :
             - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
             - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
             - `difficulte1`, un entier, qui représente la difficulté du robot 1.
             - `difficulte2`, un entier, qui représente la difficulté du robot 2.
-    SORTIE : RIEN
+    SORTIE : True si le joueur 1 gagne, False si le joueur 2 gagne, None en cas de match nul
     """
 
     joueurgagne : bool
@@ -215,8 +279,8 @@ def Jeu_Morpion(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : i
     Tableau : list[list[str]] 
     Tableau = TableauVide()
     
-    #Boucle while du tant que un joueur n'a pas gagné, on reste dedans
-    while(not joueurgagne):
+    #Boucle while du tant que un joueur n'a pas gagné et que la grille n'est pas pleine (9 cases), on reste dedans
+    while(not joueurgagne and nb_tours < 9):
         nb_tours += 1
         #Double vérification pour éviter de faire jouer les deux joueurs quand un à gagné
         if nb_tours % 2 == 1:
@@ -241,4 +305,9 @@ def Jeu_Morpion(joueur1 : str, joueur2 : str, difficulte1 : int, difficulte2 : i
                     print(f"{bcolors.blanc}{bcolors.cyan}{joueur2} à {bcolors.vert}gagné {bcolors.blanc}{bcolors.cyan}la partie !")
                     print(f"{joueur1} a {bcolors.rouge}perdu !")
 
+    #On renvoie le résultat de la partie
+    if joueurgagne:
+        return nb_tours % 2 == 1   #True si c'est le joueur 1 qui a joué le dernier coup
+
+    print(f"{bcolors.blanc}{bcolors.cyan}La grille est pleine, c'est un {bcolors.jaune}match nul{bcolors.cyan} !")
     return None
